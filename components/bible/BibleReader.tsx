@@ -38,13 +38,12 @@ export const BibleReader: React.FC<Props> = ({
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
       <BibleHeader
-        selectedBook={selectedBook}
+        book={selectedBook}
         chapter={chapter}
-        onBookSelect={() => setShowBookModal(true)}
-        onChapterSelect={() => setShowChapterModal(true)}
+        onBookPress={() => setShowBookModal(true)}
+        onChapterPress={() => setShowChapterModal(true)}
         onPreviousChapter={() => chapter > 1 && setChapter(chapter - 1)}
         onNextChapter={() => chapter < selectedBook.chapter_count && setChapter(chapter + 1)}
-        maxChapters={selectedBook.chapter_count}
       />
 
       <BibleVerseList

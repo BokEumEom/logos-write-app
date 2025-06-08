@@ -2,6 +2,7 @@ import { BibleBook } from '@/constants/bible/books';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { Feather } from '@expo/vector-icons';
+import { router } from 'expo-router';
 import React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { ThemedText } from '../ThemedText';
@@ -26,24 +27,37 @@ export const BibleHeader: React.FC<BibleHeaderProps> = ({
   const colorScheme = useColorScheme();
   const colors = Colors[colorScheme ?? 'light'];
 
+  const handleSearchPress = () => {
+    router.push('/bible/search');
+  };
+
   return (
     <View style={[styles.header, { borderBottomColor: colors.border }]}>
-      <TouchableOpacity 
-        style={styles.bookSelector}
-        onPress={onBookPress}
-      >
-        <ThemedText style={styles.bookTitle}>{book.title_ko}</ThemedText>
-        <Feather name="chevron-down" size={18} color={colors.tint} />
-      </TouchableOpacity>
+      <View style={styles.leftContainer}>
+        <TouchableOpacity 
+          style={styles.bookSelector}
+          onPress={onBookPress}
+        >
+          <ThemedText style={styles.bookTitle}>{book.title_ko}</ThemedText>
+          <Feather name="chevron-down" size={18} color={colors.tint} />
+        </TouchableOpacity>
+        
+        <TouchableOpacity 
+          style={styles.chapterSelector}
+          onPress={onChapterPress}
+        >
+          <ThemedText>{chapter}장</ThemedText>
+        </TouchableOpacity>
+      </View>
       
-      <TouchableOpacity 
-        style={styles.chapterSelector}
-        onPress={onChapterPress}
-      >
-        <ThemedText>{chapter}장</ThemedText>
-      </TouchableOpacity>
-      
-      <View style={styles.navigation}>
+      <View style={styles.rightContainer}>
+        <TouchableOpacity
+          style={[styles.navButton, { borderColor: colors.border }]}
+          onPress={handleSearchPress}
+        >
+          <Feather name="search" size={20} color={colors.tint} />
+        </TouchableOpacity>
+
         <TouchableOpacity 
           style={[styles.navButton, { borderColor: colors.border }]}
           onPress={onPreviousChapter}
@@ -76,8 +90,17 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
     padding: 16,
     borderBottomWidth: 1,
+  },
+  leftContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  rightContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   bookSelector: {
     flexDirection: 'row',
@@ -89,13 +112,10 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '600',
     marginRight: 4,
+    fontFamily: 'NanumMyeongjo',
   },
   chapterSelector: {
     padding: 8,
-  },
-  navigation: {
-    flexDirection: 'row',
-    marginLeft: 'auto',
   },
   navButton: {
     width: 40,
