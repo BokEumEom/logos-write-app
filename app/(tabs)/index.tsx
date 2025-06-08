@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
     padding: 8,
   },
   verseText: {
-    fontSize: 24,
+    fontSize: 20,
     lineHeight: 36,
     marginBottom: 16,
     textAlign: 'left',

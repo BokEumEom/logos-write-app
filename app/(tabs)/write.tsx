@@ -167,7 +167,8 @@ const styles = StyleSheet.create({
     fontSize: 20,
     lineHeight: 32,
     marginBottom: 12,
-    textAlign: 'center',
+    textAlign: 'left',
+    alignSelf: 'flex-start',
     fontFamily: 'NanumMyeongjo',
   },
   translationText: {
