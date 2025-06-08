@@ -1,12 +1,12 @@
 import { Colors } from '@/constants/Colors';
 import { useBibleSearch } from '@/hooks/bible/useBibleSearch';
 import { useColorScheme } from '@/hooks/useColorScheme';
-import { useBibleStore } from '@/store/useBibleStore';
 import { Feather } from '@expo/vector-icons';
 import { router } from 'expo-router';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     ActivityIndicator,
+    Keyboard,
     ScrollView,
     StyleSheet,
     Text,
@@ -37,27 +37,23 @@ export const BibleSearchBar: React.FC<BibleSearchBarProps> = ({
     error,
   } = useBibleSearch();
 
-  const { setSelectedBook, setCurrentChapter } = useBibleStore();
-
   const handleResultPress = (bookCode: string, chapter: number, verse: number) => {
-    const book = bookResults.find(b => b.code === bookCode);
-    if (book) {
-      setSelectedBook(book);
-      setCurrentChapter(chapter);
-    }
     router.push(`/bible/${bookCode}/${chapter}?verse=${verse}`);
+    Keyboard.dismiss();
     onClose?.();
   };
 
   const handleBookPress = (bookCode: string) => {
-    const book = bookResults.find(b => b.code === bookCode);
-    if (book) {
-      setSelectedBook(book);
-      setCurrentChapter(1);
-    }
     router.push(`/bible/${bookCode}/1`);
+    Keyboard.dismiss();
     onClose?.();
   };
+
+  useEffect(() => {
+    if (!isFocused) {
+      setQuery('');
+    }
+  }, [isFocused]);
 
   return (
     <View style={styles.container}>
